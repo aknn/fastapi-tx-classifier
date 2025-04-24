@@ -11,3 +11,13 @@ venv.bak/
 __pycache__/
 
 .pytest_cache/
+
+# MLflow local store
+mlruns/
+
+# DVC
+.dvc/
+*.dvc
+.dvcignore
+dvc.lock
+dvc.yaml

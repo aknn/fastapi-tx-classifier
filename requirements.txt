@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+httpx
+redis
+prometheus-client
+
+# Added for structured JSON logging
+python-json-logger
+pydantic-settings
+
+rapidfuzz
+mlflow

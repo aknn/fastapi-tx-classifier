@@ -1,0 +1,74 @@
+{
+    "overrides": {
+        "DinNER at M&S": "food",
+        "groceries and toiletries": "food",
+        "£20 uber to waitrose for food": "transport",
+        "GaS BiLl Payment": "utilities"
+    },
+    "category_keywords": {
+        "food": [
+            "lunch",
+            "dinner",
+            "restaurant",
+            "grocery",
+            "waitrose",
+            "m&s food",
+            "coffee"
+        ],
+        "transport": [
+            "uber",
+            "taxi",
+            "bus",
+            "train",
+            "subway",
+            "transport",
+            "fuel",
+            "petrol"
+        ],
+        "entertainment": [
+            "movie",
+            "cinema",
+            "concert",
+            "theater",
+            "show",
+            "game",
+            "tickets"
+        ],
+        "utilities": [
+            "electricity",
+            "water",
+            "gas",
+            "utility",
+            "internet",
+            "phone",
+            "bill"
+        ],
+        "shopping": [
+            "amazon",
+            "shopping",
+            "mall",
+            "store",
+            "clothes",
+            "electronics",
+            "toiletries"
+        ]
+    },
+    "stop_words": [
+        "a",
+        "an",
+        "the",
+        "at",
+        "in",
+        "on",
+        "for",
+        "to",
+        "with",
+        "and",
+        "or",
+        "of",
+        "payment",
+        "charge",
+        "purchase"
+    ],
+    "fuzzy_threshold": 85
+}

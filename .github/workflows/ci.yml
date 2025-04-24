@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip3 install -r requirements.txt
+          pip3 install -r dev-requirements.txt
+
+      - name: Run tests
+        run: pytest --maxfail=1 --disable-warnings --quiet
+
+      - name: Lint with black
+        run: black --check .
+
+      - name: Lint with ruff
+        run: ruff .
+
+      - name: Type check with mypy
+        run: mypy .

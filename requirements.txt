@@ -10,3 +10,4 @@ pydantic-settings
 
 rapidfuzz
 mlflow
+dvc

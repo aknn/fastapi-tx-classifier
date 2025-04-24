@@ -17,7 +17,6 @@ mlruns/
 
 # DVC
 .dvc/
-*.dvc
 .dvcignore
 dvc.lock
 dvc.yaml

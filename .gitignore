@@ -20,3 +20,6 @@ mlruns/
 .dvcignore
 dvc.lock
 dvc.yaml
+
+# DVC remote storage
+dvc_storage/

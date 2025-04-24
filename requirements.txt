@@ -11,3 +11,4 @@ pydantic-settings
 rapidfuzz
 mlflow
 dvc
+scikit-learn

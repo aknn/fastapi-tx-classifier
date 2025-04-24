@@ -7,6 +7,7 @@ from typing import Tuple, Dict, List, Any
 from prometheus_client import Counter
 import logging
 import os
+from model_registry import ModelInterface, register_model
 
 # --- Configuration Loading ---
 CONFIG_FILE = os.path.join(os.path.dirname(
@@ -257,3 +258,15 @@ async def classify_transaction_detailed(text: str, amount: float) -> Tuple[Trans
     classification_hits.labels(hit_type="default_other").inc()
     # Changed from 0.5 to 0.6 to match tests
     return TransactionCategory.OTHER, 0.6, "default_other"
+
+# --- Model Implementations ---
+
+
+@register_model("rule_based")
+class RuleBasedModel(ModelInterface):
+    """
+    Rule-based classifier model using classify_transaction_detailed logic.
+    """
+
+    async def classify(self, text: str, amount: float):
+        return await classify_transaction_detailed(text, amount)

@@ -7,7 +7,7 @@
 
 ## Phase 1: Pluggable Model + Experimentation (1–2 days)
 - Define `ModelInterface` and registry in `model_registry.py`
-- Implement rules-based & sklearn GB classifiers
+- Implement rules-based & LLM based classifiers
 - Inject A/B test flag (header or user-hash) at inference time
 - Collect per-model metrics (accuracy, latency) to MLflow
 

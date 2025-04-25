@@ -1,5 +1,4 @@
-import pytest
-from models import TransactionCategory
+import pytest  # noqa: F401
 
 # The client fixture is imported from conftest.py automatically
 

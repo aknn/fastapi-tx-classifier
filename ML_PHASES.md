@@ -1,7 +1,7 @@
 # ML Infrastructure Phasing Plan
 
 ## Phase 0: MLOps & Baseline Setup (0.5–1 day)
-- Add MLflow (or Weights & Biases) for experiment tracking
+- Add MLflow for experiment tracking
 - Ensure data versioning (Git-LFS or DVC)
 - Wire up basic CI/CD for model artifacts
 

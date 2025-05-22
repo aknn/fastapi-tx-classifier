@@ -47,6 +47,12 @@ jobs:
       - name: Run tests
         run: pytest --maxfail=1 --disable-warnings --quiet
 
+      - name: Show Black diff
+        run: |
+          echo "--- Showing black diff ---"
+          python -m black --diff .
+        continue-on-error: true # Allow this step to fail without stopping the workflow
+
       - name: Lint with black
         run: |
           echo "--- Ensuring black is installed ---"

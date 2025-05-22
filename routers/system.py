@@ -26,7 +26,9 @@ async def ready(redis=Depends(get_redis)) -> JSONResponse:
         await redis.ping()
         return JSONResponse({"ready": True}, status_code=status.HTTP_200_OK)
     except Exception:
-        return JSONResponse({"ready": False}, status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
+        return JSONResponse(
+            {"ready": False}, status_code=status.HTTP_503_SERVICE_UNAVAILABLE
+        )
 
 
 @router.get(

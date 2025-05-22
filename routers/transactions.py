@@ -17,8 +17,7 @@ async def list_transactions(redis: Redis = Depends(redis_client.get_redis)):
     transactions = {}
     # Fetch all keys and filter numeric transaction IDs
     keys = await redis.keys("tx:*")
-    tx_keys = [k for k in keys if k.startswith(
-        "tx:") and k.split(":")[1].isdigit()]
+    tx_keys = [k for k in keys if k.startswith("tx:") and k.split(":")[1].isdigit()]
     if not tx_keys:
         return {"message": "No transactions found"}
     values = await redis.mget(*tx_keys)
@@ -45,8 +44,7 @@ async def transaction_stats(redis: Redis = Depends(redis_client.get_redis)):
     category_counts = {cat.value: 0 for cat in TransactionCategory}
     # Fetch all transaction keys
     keys = await redis.keys("tx:*")
-    tx_keys = [k for k in keys if k.startswith(
-        "tx:") and k.split(":")[1].isdigit()]
+    tx_keys = [k for k in keys if k.startswith("tx:") and k.split(":")[1].isdigit()]
     if not tx_keys:
         return {"message": "No transactions found"}
     # Count categories

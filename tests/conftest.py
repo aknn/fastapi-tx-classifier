@@ -10,10 +10,11 @@ default_store = None
 @pytest.fixture(autouse=True)
 def override_redis_store():
     store = redis_client.InMemoryStore()
-    store._store['tx:id_counter'] = 0
+    store._store["tx:id_counter"] = 0
 
     async def get_store():
         return store
+
     app.dependency_overrides[redis_client.get_redis] = get_store
     yield
     app.dependency_overrides.clear()

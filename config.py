@@ -9,10 +9,10 @@ class Settings(BaseSettings):
     app_port: int = Field(5000, env="APP_PORT")
     testing: bool = Field(False, env="TESTING")
     # MLflow tracking URI using local file store
-    mlflow_tracking_uri: str = Field(
-        "file:./mlruns", env="MLFLOW_TRACKING_URI")
+    mlflow_tracking_uri: str = Field("file:./mlruns", env="MLFLOW_TRACKING_URI")
     mlflow_experiment_name: str = Field(
-        "classification_experiments", env="MLFLOW_EXPERIMENT_NAME")  # Default experiment name
+        "classification_experiments", env="MLFLOW_EXPERIMENT_NAME"
+    )  # Default experiment name
 
     class Config:
         env_file = ".env"
@@ -20,4 +20,6 @@ class Settings(BaseSettings):
     @classmethod
     def for_testing(cls):
         """Return settings configured for testing environment"""
-        return cls(testing=True, redis_url="redis://localhost:6379/1")  # Use a different DB for tests
+        return cls(
+            testing=True, redis_url="redis://localhost:6379/1"
+        )  # Use a different DB for tests

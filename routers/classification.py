@@ -5,6 +5,7 @@ import json
 import time
 import logging
 from prometheus_client import Histogram, Counter  # Import Counter
+
 # Import the new classification logic
 from classification_logic import classify_transaction_detailed
 from config import Settings
@@ -19,8 +20,9 @@ router = APIRouter(prefix="/classify-transaction", tags=["classification"])
 
 # Metrics
 # Latency histogram measures the *entire* route execution time
-latency = Histogram("classify_latency_seconds",
-                    "Latency of classify_transaction endpoint in seconds")
+latency = Histogram(
+    "classify_latency_seconds", "Latency of classify_transaction endpoint in seconds"
+)
 # Cache requests counter remains relevant
 cache_requests = Counter(
     "cache_requests_total",
@@ -37,12 +39,14 @@ logger = logging.getLogger("app")
     response_model=TransactionResponse,
     summary="Classify a transaction text",
 )
-async def classify_transaction_route(request: TransactionRequest, redis=Depends(redis_client.get_redis)) -> TransactionResponse:
+async def classify_transaction_route(
+    request: TransactionRequest, redis=Depends(redis_client.get_redis)
+) -> TransactionResponse:
     start_time = time.perf_counter()
     amount_str = f"{request.amount:.2f}" if request.amount is not None else "0.00"
     cache_key = f"tx_classified:{request.text.strip().lower()}:{amount_str}"
     # Skip cache for refunds (negative amounts)
-    is_refund = (request.amount is not None and request.amount < 0)
+    is_refund = request.amount is not None and request.amount < 0
 
     # --- Cache Check (skip for refunds) ---
     if not is_refund:
@@ -51,8 +55,15 @@ async def classify_transaction_route(request: TransactionRequest, redis=Depends(
             cache_requests.labels(result="hit").inc()
             duration = time.perf_counter() - start_time
             latency.observe(duration)
-            logger.info(json.dumps(
-                {"event": "cache_hit", "key": cache_key, "duration_ms": duration * 1000}))
+            logger.info(
+                json.dumps(
+                    {
+                        "event": "cache_hit",
+                        "key": cache_key,
+                        "duration_ms": duration * 1000,
+                    }
+                )
+            )
             # Log cache hit inference to MLflow
             mlflow.start_run()
             mlflow.log_param("text", request.text)
@@ -65,13 +76,20 @@ async def classify_transaction_route(request: TransactionRequest, redis=Depends(
                 transaction_data = cached_result.get("transaction")
                 if transaction_data:
                     transaction_obj = Transaction(**transaction_data)
-                    return TransactionResponse(transaction=transaction_obj, message=cached_result.get("message", "Transaction loaded from cache"))
+                    return TransactionResponse(
+                        transaction=transaction_obj,
+                        message=cached_result.get(
+                            "message", "Transaction loaded from cache"
+                        ),
+                    )
                 else:
                     logger.warning(
-                        f"Cache data for key {cache_key} missing 'transaction' field.")
+                        f"Cache data for key {cache_key} missing 'transaction' field."
+                    )
             except (json.JSONDecodeError, TypeError, ValueError) as e:
                 logger.error(
-                    f"Error decoding/validating cache data for key {cache_key}: {e}")
+                    f"Error decoding/validating cache data for key {cache_key}: {e}"
+                )
         # Fall through to classify if no valid cache
 
     # --- Cache Miss - Classification ---
@@ -81,7 +99,9 @@ async def classify_transaction_route(request: TransactionRequest, redis=Depends(
     transaction_id = await redis.incr("tx:id_counter")
 
     # Pass the transaction amount into classification logic
-    category, confidence, hit_type = await classify_transaction_detailed(request.text, request.amount)
+    category, confidence, hit_type = await classify_transaction_detailed(
+        request.text, request.amount
+    )
 
     transaction = Transaction(
         id=transaction_id,
@@ -91,10 +111,11 @@ async def classify_transaction_route(request: TransactionRequest, redis=Depends(
         confidence=confidence,
     )
 
-    message = f"Transaction classified as {category.value} via {hit_type} ({confidence:.2f})"
+    message = (
+        f"Transaction classified as {category.value} via {hit_type} ({confidence:.2f})"
+    )
     # This is the object returned to the user
-    response_data = TransactionResponse(
-        transaction=transaction, message=message)
+    response_data = TransactionResponse(transaction=transaction, message=message)
     # This is what gets stored in the classification cache (keyed by text+amount)
     # Use .dict() for older Pydantic or .model_dump() for v2
     result_data_for_cache = response_data.model_dump()
@@ -108,20 +129,26 @@ async def classify_transaction_route(request: TransactionRequest, redis=Depends(
     # Store the full response data (transaction + message) keyed by text+amount for classification caching (skip refunds)
     if not is_refund:
         CACHE_TTL_SECONDS = 3600
-        await redis.set(cache_key, json.dumps(result_data_for_cache), ex=CACHE_TTL_SECONDS)
+        await redis.set(
+            cache_key, json.dumps(result_data_for_cache), ex=CACHE_TTL_SECONDS
+        )
 
     # --- Logging and Metrics ---
     duration = time.perf_counter() - start_time
     latency.observe(duration)
-    logger.info(json.dumps({
-        "event": "cache_miss",
-        "key": cache_key,
-        "transaction_id": transaction_id,
-        "category": category.value,
-        "confidence": confidence,
-        "hit_type": hit_type,
-        "duration_ms": duration * 1000,
-    }))
+    logger.info(
+        json.dumps(
+            {
+                "event": "cache_miss",
+                "key": cache_key,
+                "transaction_id": transaction_id,
+                "category": category.value,
+                "confidence": confidence,
+                "hit_type": hit_type,
+                "duration_ms": duration * 1000,
+            }
+        )
+    )
     # Log cache miss inference to MLflow
     mlflow.start_run()
     mlflow.log_param("text", request.text)

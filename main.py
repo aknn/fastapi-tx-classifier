@@ -14,8 +14,7 @@ settings = Settings()
 
 logger = logging.getLogger("app")
 handler = logging.StreamHandler()
-fmt = jsonlogger.JsonFormatter(
-    '%(asctime)s %(levelname)s %(name)s %(message)s')
+fmt = jsonlogger.JsonFormatter("%(asctime)s %(levelname)s %(name)s %(message)s")
 handler.setFormatter(fmt)
 logger.addHandler(handler)
 logger.setLevel(getattr(logging, settings.log_level.upper(), logging.INFO))
@@ -36,6 +35,7 @@ async def api_generic_endpoint(data: dict = Body(...)):
     if not data:
         raise HTTPException(status_code=400, detail={})
     return {"received": data}
+
 
 # Root and About endpoints
 
@@ -60,9 +60,12 @@ async def catch_exceptions(request: Request, call_next):
         logger.exception("Unhandled error")
         return JSONResponse(
             status_code=500,
-            content={"code": "internal_error",
-                     "message": "An unexpected error occurred"},
+            content={
+                "code": "internal_error",
+                "message": "An unexpected error occurred",
+            },
         )
+
 
 # Include routers from app/routers
 
@@ -72,5 +75,4 @@ app.include_router(transactions_router)
 app.include_router(system_router)
 
 if __name__ == "__main__":
-    uvicorn_run("main:app", host=settings.app_host,
-                port=settings.app_port, reload=True)
+    uvicorn_run("main:app", host=settings.app_host, port=settings.app_port, reload=True)

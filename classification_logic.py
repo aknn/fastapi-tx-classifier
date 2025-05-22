@@ -10,8 +10,9 @@ import os
 from model_registry import ModelInterface, register_model
 
 # --- Configuration Loading ---
-CONFIG_FILE = os.path.join(os.path.dirname(
-    __file__), 'classification_config.json')  # Adjusted path
+CONFIG_FILE = os.path.join(
+    os.path.dirname(__file__), "classification_config.json"
+)  # Adjusted path
 
 
 def load_config() -> Dict[str, Any]:
@@ -22,38 +23,44 @@ def load_config() -> Dict[str, Any]:
         "category_keywords": {cat: [] for cat in TransactionCategory},
         "stop_words_set": set(),
         "fuzzy_threshold": 85,
-        "flat_keywords": {}
+        "flat_keywords": {},
     }
     try:
         # Ensure the config file exists before trying to open it
         if not os.path.exists(CONFIG_FILE):
             logging.warning(
-                f"Config file not found at {CONFIG_FILE}. Creating with defaults.")
+                f"Config file not found at {CONFIG_FILE}. Creating with defaults."
+            )
             # Create the file with default content if it doesn't exist
-            with open(CONFIG_FILE, 'w') as f:
+            with open(CONFIG_FILE, "w") as f:
                 # Create a serializable version of the default config
                 serializable_defaults = {
                     "overrides": {},
                     "category_keywords": {cat.value: [] for cat in TransactionCategory},
                     "stop_words": [],
-                    "fuzzy_threshold": 85
+                    "fuzzy_threshold": 85,
                 }
                 json.dump(serializable_defaults, f, indent=2)
             # Return the processed default config immediately
             return default_config
 
-        with open(CONFIG_FILE, 'r') as f:
+        with open(CONFIG_FILE, "r") as f:
             config = json.load(f)
             # Validate basic structure
-            required_keys = ["overrides", "category_keywords",
-                             "stop_words", "fuzzy_threshold"]
+            required_keys = [
+                "overrides",
+                "category_keywords",
+                "stop_words",
+                "fuzzy_threshold",
+            ]
             if not all(key in config for key in required_keys):
                 raise ValueError("Config file missing required keys.")
             # Convert category keys in keywords to Enum members for easier use
             config["category_keywords"] = {
                 TransactionCategory(cat): keywords
                 for cat, keywords in config["category_keywords"].items()
-                if cat in TransactionCategory._value2member_map_  # Ensure category exists
+                if cat
+                in TransactionCategory._value2member_map_  # Ensure category exists
             }
             # Pre-compile stop words set for faster lookups
             config["stop_words_set"] = set(config.get("stop_words", []))
@@ -69,7 +76,8 @@ def load_config() -> Dict[str, Any]:
             return config
     except (FileNotFoundError, json.JSONDecodeError, ValueError, TypeError) as e:
         logging.error(
-            f"Error loading or processing classification config from {CONFIG_FILE}: {e}. Using defaults.")
+            f"Error loading or processing classification config from {CONFIG_FILE}: {e}. Using defaults."
+        )
         return default_config  # Return safe defaults
 
 
@@ -79,9 +87,17 @@ CATEGORY_KEYWORDS = config["category_keywords"]
 STOP_WORDS = config["stop_words_set"]
 # --- Ensure critical merchant keywords are not treated as stop words ---
 _CRITICAL_KEYWORDS = {
-    "amazon", "amazonuk", "asda", "tesco", "waitrose",
-    "uber", "uber_eats", "ubereats",
-    "netflix", "spotify", "apple"
+    "amazon",
+    "amazonuk",
+    "asda",
+    "tesco",
+    "waitrose",
+    "uber",
+    "uber_eats",
+    "ubereats",
+    "netflix",
+    "spotify",
+    "apple",
 }
 STOP_WORDS.difference_update(_CRITICAL_KEYWORDS)
 FUZZY_THRESHOLD = config["fuzzy_threshold"]
@@ -94,7 +110,8 @@ try:
     _nlp = spacy.load("en_core_web_sm", disable=["parser", "ner"])
 except OSError:
     logging.error(
-        "Spacy model 'en_core_web_sm' not found. Please run 'python -m spacy download en_core_web_sm'. Using basic normalization.")
+        "Spacy model 'en_core_web_sm' not found. Please run 'python -m spacy download en_core_web_sm'. Using basic normalization."
+    )
     _nlp = None
 
 # --- Metrics ---
@@ -113,25 +130,26 @@ def normalize_text(text: str) -> List[str]:
     Handles potential camelCase splitting.
     """
     # 1. Split camelCase (simple version)
-    text = re.sub('([a-z])([A-Z])', r'\1 \2', text)
+    text = re.sub("([a-z])([A-Z])", r"\1 \2", text)
     # 2. Lowercase
     text = text.lower()
     # 3. Remove punctuation and numbers (keep spaces)
-    text = re.sub(r'[^a-z\s]', '', text)
+    text = re.sub(r"[^a-z\s]", "", text)
 
     if not _nlp:  # Fallback if spacy model isn't loaded
-        tokens = [word for word in text.split(
-        ) if word and word not in STOP_WORDS]
+        tokens = [word for word in text.split() if word and word not in STOP_WORDS]
         return tokens
 
     # 4. Use spaCy for tokenization and lemmatization
     doc = _nlp(text)
     tokens = [
-        token.lemma_ for token in doc
+        token.lemma_
+        for token in doc
         # Keep only alpha, non-stopword lemmas > 1 char
         if token.is_alpha and token.lemma_ not in STOP_WORDS and len(token.lemma_) > 1
     ]
     return tokens
+
 
 # --- Utility Helpers ---
 
@@ -146,10 +164,13 @@ def phrase_in_text(phrase: str, text: str) -> bool:
     pattern = rf"\b{re.escape(phrase)}\b"
     return re.search(pattern, text) is not None
 
+
 # --- Classification Logic ---
 
 
-async def classify_transaction_detailed(text: str, amount: float) -> Tuple[TransactionCategory, float, str]:
+async def classify_transaction_detailed(
+    text: str, amount: float
+) -> Tuple[TransactionCategory, float, str]:
     """
     Classifies transaction text using a tiered approach:
     1. Exact Overrides
@@ -168,14 +189,16 @@ async def classify_transaction_detailed(text: str, amount: float) -> Tuple[Trans
     if override_key in (k.lower() for k in OVERRIDES.keys()):
         # Find the original key to get the correct category value
         original_override_key = next(
-            k for k in OVERRIDES.keys() if k.lower() == override_key)
+            k for k in OVERRIDES.keys() if k.lower() == override_key
+        )
         category_str = OVERRIDES[original_override_key]
         if category_str in TransactionCategory._value2member_map_:
             classification_hits.labels(hit_type="override").inc()
             return TransactionCategory(category_str), 1.0, "override"
         else:
             logging.warning(
-                f"Override category '{category_str}' for '{original_text}' not found in TransactionCategory enum.")
+                f"Override category '{category_str}' for '{original_text}' not found in TransactionCategory enum."
+            )
 
     # 2. Normalize text for further checks
     normalized_tokens = normalize_text(original_text)
@@ -198,7 +221,9 @@ async def classify_transaction_detailed(text: str, amount: float) -> Tuple[Trans
     for category, keywords in CATEGORY_KEYWORDS.items():
         for keyword_phrase in keywords:
             # Only check phrases (more than one word) that might be in the normalized text
-            if " " in keyword_phrase and phrase_in_text(keyword_phrase, normalized_text):
+            if " " in keyword_phrase and phrase_in_text(
+                keyword_phrase, normalized_text
+            ):
                 classification_hits.labels(hit_type="phrase_match").inc()
                 return category, 1.0, "phrase_match"  # High confidence for phrase match
 
@@ -233,8 +258,7 @@ async def classify_transaction_detailed(text: str, amount: float) -> Tuple[Trans
     if matched_categories:
         # If multiple categories match via single keywords, maybe return OTHER or prioritize?
         # For now, just take the first one alphabetically by category name for consistency.
-        chosen_category = sorted(
-            list(matched_categories), key=lambda c: c.value)[0]
+        chosen_category = sorted(list(matched_categories), key=lambda c: c.value)[0]
         classification_hits.labels(hit_type="token_match").inc()
         # Confidence slightly lower than phrase match
         return chosen_category, 0.9, "token_match"
@@ -244,8 +268,12 @@ async def classify_transaction_detailed(text: str, amount: float) -> Tuple[Trans
         # Use rapidfuzz to find the best match for the *entire normalized text* against the flat list of keywords
         # `process.extractOne` returns (best_match_keyword, score, index/key)
         # We use the dictionary `FLAT_KEYWORDS` as the choices, so it returns the keyword itself.
-        best_match = process.extractOne(normalized_text, FLAT_KEYWORDS.keys(
-        ), scorer=fuzz.WRatio, score_cutoff=FUZZY_THRESHOLD)
+        best_match = process.extractOne(
+            normalized_text,
+            FLAT_KEYWORDS.keys(),
+            scorer=fuzz.WRatio,
+            score_cutoff=FUZZY_THRESHOLD,
+        )
 
         if best_match:
             matched_keyword, score, _ = best_match
@@ -258,6 +286,7 @@ async def classify_transaction_detailed(text: str, amount: float) -> Tuple[Trans
     classification_hits.labels(hit_type="default_other").inc()
     # Changed from 0.5 to 0.6 to match tests
     return TransactionCategory.OTHER, 0.6, "default_other"
+
 
 # --- Model Implementations ---
 

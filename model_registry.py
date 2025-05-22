@@ -7,7 +7,9 @@ from models import TransactionCategory
 
 class ModelInterface(ABC):
     @abstractmethod
-    async def classify(self, text: str, amount: float) -> Tuple[TransactionCategory, float, str]:
+    async def classify(
+        self, text: str, amount: float
+    ) -> Tuple[TransactionCategory, float, str]:
         """
         Classify a transaction description and amount.
         Returns a tuple of (category, confidence, hit_type).
@@ -24,10 +26,12 @@ def register_model(name: str):
     Decorator to register a model class under a given name.
     Instantiates and stores the model in the registry.
     """
+
     def decorator(model_cls: Type[ModelInterface]) -> Type[ModelInterface]:
         instance = model_cls()
         _model_registry[name] = instance
         return model_cls
+
     return decorator
 
 

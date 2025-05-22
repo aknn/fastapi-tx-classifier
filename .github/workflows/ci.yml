@@ -29,6 +29,11 @@ jobs:
           echo "--- Downloading spacy model en_core_web_sm ---"
           python -m spacy download en_core_web_sm
 
+      - name: Verify black installation
+        run: |
+          echo "--- Verifying black installation ---"
+          black --version
+
       - name: Verify installed packages
         run: |
           echo "--- PYTHON VERSION AND EXECUTABLE ---"

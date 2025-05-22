@@ -2,4 +2,4 @@
 pytest
 pytest-asyncio
 dvc
-black
+black==23.3.0

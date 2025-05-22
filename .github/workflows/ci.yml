@@ -26,6 +26,8 @@ jobs:
           pip install -v -r requirements.txt
           echo "--- Installing dev-requirements.txt ---"
           pip install -v -r dev-requirements.txt
+          echo "--- Downloading spacy model en_core_web_sm ---"
+          python -m spacy download en_core_web_sm
 
       - name: Verify installed packages
         run: |

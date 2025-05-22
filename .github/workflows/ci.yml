@@ -32,7 +32,7 @@ jobs:
       - name: Verify black installation
         run: |
           echo "--- Verifying black installation ---"
-          black --version
+          python -m black --version
 
       - name: Verify installed packages
         run: |
@@ -48,7 +48,10 @@ jobs:
         run: pytest --maxfail=1 --disable-warnings --quiet
 
       - name: Lint with black
-        run: black --check .
+        run: |
+          echo "--- Ensuring black is installed ---"
+          python -m pip install black
+          python -m black --check .
 
       - name: Lint with ruff
         run: ruff .

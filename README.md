@@ -61,7 +61,7 @@ A production-ready, ML-powered micro-service that classifies financial-transacti
 
 ```bash
 git clone https://github.com/yourhandle/fastapi_tx_classifier
-cd fastapi-tx-classifier
+cd fastapi_tx_classifier
 make init            # pre-commit & venv setup
 docker compose up -d # api + redis
 open http://localhost:8000/docs

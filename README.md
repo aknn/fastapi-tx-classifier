@@ -60,7 +60,7 @@ A production-ready, ML-powered micro-service that classifies financial-transacti
 4. How to Run Locally
 
 ```bash
-git clone https://github.com/yourhandle/fastapi-tx-classifier
+git clone https://github.com/yourhandle/fastapi_tx_classifier
 cd fastapi-tx-classifier
 make init            # pre-commit & venv setup
 docker compose up -d # api + redis

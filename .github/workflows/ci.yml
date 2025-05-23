@@ -67,25 +67,17 @@ jobs:
         run: |
           echo "PATH before: $PATH"
           python -m pip install --upgrade pip
-          python -m pip install --user ruff
-          export PATH="$HOME/.local/bin:$PATH"
+          # Install ruff to the global site-packages, not --user
+          python -m pip install ruff
           echo "PATH after: $PATH"
-          python -m ruff check .
+          # Run ruff from the correct directory if code is in fastapi_tx_classifier
+          python -m ruff check fastapi_tx_classifier
 
       - name: Type check with mypy
-        working-directory: fastapi_tx_classifier
         run: |
           echo "--- Ensuring mypy is installed ---"
           python -m pip install mypy
           echo "--- Running mypy type check ---"
-          python -m mypy --namespace-packages --exclude "__init__\.py" \
-            main.py \
-            config.py \
-            classification_logic.py \
-            model_registry.py \
-            models.py \
-            redis_client.py \
-            exceptions.py \
-            routers \
-            scripts \
-            tests
+          # Target the fastapi_tx_classifier directory explicitly
+          # Add --explicit-package-bases if fastapi_tx_classifier is meant to be a base for packages
+          python -m mypy --namespace-packages --exclude "__init__\\\\.py" fastapi_tx_classifier

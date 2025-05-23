@@ -74,10 +74,19 @@ jobs:
           python -m ruff check fastapi_tx_classifier
 
       - name: Type check with mypy
+        working-directory: fastapi_tx_classifier
         run: |
           echo "--- Ensuring mypy is installed ---"
           python -m pip install mypy
           echo "--- Running mypy type check ---"
-          # Target the fastapi_tx_classifier directory explicitly
-          # Add --explicit-package-bases if fastapi_tx_classifier is meant to be a base for packages
-          python -m mypy --namespace-packages --exclude "__init__\\\\.py" fastapi_tx_classifier
+          python -m mypy --no-namespace-packages --exclude "__init__\\.py" \
+            main.py \
+            config.py \
+            classification_logic.py \
+            model_registry.py \
+            models.py \
+            redis_client.py \
+            exceptions.py \
+            routers \
+            scripts \
+            tests

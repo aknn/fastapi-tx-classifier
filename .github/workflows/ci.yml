@@ -75,14 +75,14 @@ jobs:
           echo "--- Ensuring mypy is installed ---"
           python -m pip install mypy
           echo "--- Running mypy type check ---"
-          python -m mypy --exclude "__init__\.py" --explicit-package-bases=. \
-            -p main \
-            -p config \
-            -p classification_logic \
-            -p model_registry \
-            -p models \
-            -p redis_client \
-            -p exceptions \
-            -p routers \
-            -p scripts \
-            -p tests
+          python -m mypy --exclude "__init__\.py" --explicit-package-bases=. \\
+            main.py \\
+            config.py \\
+            classification_logic.py \\
+            model_registry.py \\
+            models.py \\
+            redis_client.py \\
+            exceptions.py \\
+            routers \\
+            scripts \\
+            tests

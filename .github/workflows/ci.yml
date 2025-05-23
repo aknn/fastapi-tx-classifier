@@ -61,8 +61,11 @@ jobs:
 
       - name: Lint with ruff
         run: |
-          echo "--- Ensuring ruff is installed ---"
+          echo "--- Debug: PATH is $PATH ---"
+          python -m pip install --upgrade pip
           python -m pip install ruff
+          echo "--- Installed ruff version ---"
+          python -m ruff --version
           echo "--- Running ruff check ---"
           python -m ruff check .
 

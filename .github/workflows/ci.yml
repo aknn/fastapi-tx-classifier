@@ -60,7 +60,9 @@ jobs:
           python -m black --check .
 
       - name: Lint with ruff
-        run: ruff .
+        run: |
+          pip install ruff  # Ensure ruff is installed
+          ruff check .
 
       - name: Type check with mypy
         run: mypy .

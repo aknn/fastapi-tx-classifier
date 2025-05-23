@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          path: fastapi_tx_classifier
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -71,18 +73,19 @@ jobs:
           python -m ruff check .
 
       - name: Type check with mypy
+        working-directory: fastapi_tx_classifier
         run: |
           echo "--- Ensuring mypy is installed ---"
           python -m pip install mypy
           echo "--- Running mypy type check ---"
-          python -m mypy --namespace-packages --exclude "__init__\.py" \\
-            main.py \\
-            config.py \\
-            classification_logic.py \\
-            model_registry.py \\
-            models.py \\
-            redis_client.py \\
-            exceptions.py \\
-            routers \\
-            scripts \\
+          python -m mypy --namespace-packages --exclude "__init__\.py" \
+            main.py \
+            config.py \
+            classification_logic.py \
+            model_registry.py \
+            models.py \
+            redis_client.py \
+            exceptions.py \
+            routers \
+            scripts \
             tests

@@ -61,9 +61,14 @@ jobs:
 
       - name: Lint with ruff
         run: |
-          python -m pip install --upgrade pip
-          pip install ruff
+          echo "--- Ensuring ruff is installed ---"
+          python -m pip install ruff
+          echo "--- Running ruff check ---"
           python -m ruff check .
 
       - name: Type check with mypy
-        run: mypy .
+        run: |
+          echo "--- Ensuring mypy is installed ---"
+          python -m pip install mypy
+          echo "--- Running mypy type check ---"
+          python -m mypy .

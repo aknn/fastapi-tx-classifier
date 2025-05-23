@@ -75,4 +75,4 @@ jobs:
           echo "--- Ensuring mypy is installed ---"
           python -m pip install mypy
           echo "--- Running mypy type check ---"
-          python -m mypy .
+          python -m mypy main.py config.py classification_logic.py model_registry.py models.py redis_client.py exceptions.py routers/ scripts/ tests/

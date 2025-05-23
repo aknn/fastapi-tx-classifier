@@ -13,3 +13,4 @@ mlflow
 dvc
 scikit-learn
 spacy==3.7.2
+ruff

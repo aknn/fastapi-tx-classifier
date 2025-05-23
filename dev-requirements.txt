@@ -3,3 +3,4 @@ pytest
 pytest-asyncio
 dvc
 black==23.7.0
+ruff

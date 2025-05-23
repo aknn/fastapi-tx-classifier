@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Request, status
+from fastapi import APIRouter, Depends, status
 from typing import Dict
 from fastapi.responses import JSONResponse, Response as PrometheusResponse
 from redis_client import get_redis

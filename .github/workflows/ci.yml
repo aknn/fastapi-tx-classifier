@@ -26,6 +26,7 @@ jobs:
           pip install -v -r requirements.txt
           echo "--- Installing dev-requirements.txt ---"
           pip install -v -r dev-requirements.txt
+          python -m pip install ruff
           echo "--- Downloading spacy model en_core_web_sm ---"
           python -m spacy download en_core_web_sm
 
@@ -60,14 +61,7 @@ jobs:
           python -m black --check .
 
       - name: Lint with ruff
-        run: |
-          echo "--- Debug: PATH is $PATH ---"
-          python -m pip install --upgrade pip
-          python -m pip install ruff
-          echo "--- Installed ruff version ---"
-          python -m ruff --version
-          echo "--- Running ruff check ---"
-          python -m ruff check .
+        run: python -m ruff check .
 
       - name: Type check with mypy
         run: |

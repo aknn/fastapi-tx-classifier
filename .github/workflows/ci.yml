@@ -75,7 +75,7 @@ jobs:
           echo "--- Ensuring mypy is installed ---"
           python -m pip install mypy
           echo "--- Running mypy type check ---"
-          python -m mypy --exclude "__init__\.py" --explicit-package-bases=. \\
+          python -m mypy --namespace-packages --exclude "__init__\.py" --explicit-package-bases=. \\
             main.py \\
             config.py \\
             classification_logic.py \\

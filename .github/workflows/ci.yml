@@ -41,9 +41,14 @@ jobs:
           echo "--- Downloading spacy model en_core_web_sm ---"
           python -m spacy download en_core_web_sm
 
+      - name: Upgrade black to pinned version
+        run: |
+          echo "--- Installing black==24.1.1 ---"
+          python -m pip install --upgrade --force-reinstall black==24.1.1
+
       - name: Verify black installation
         run: |
-          echo "--- Verifying black installation ---"
+          echo "--- Verifying black installation after upgrade ---"
           python -m black --version
 
       - name: Verify installed packages
@@ -65,15 +70,8 @@ jobs:
           python -m black --diff .
         continue-on-error: true # Allow this step to fail without stopping the workflow
 
-      - name: Upgrade black to pinned version
-        run: |
-          echo "--- Installing black==24.1.1 ---"
-          python -m pip install --upgrade black==24.1.1
-
       - name: Lint with black
         run: |
-          echo "--- Verifying black version before linting ---"
-          python -m black --version
           echo "--- Running black check ---"
           python -m black --check .
 

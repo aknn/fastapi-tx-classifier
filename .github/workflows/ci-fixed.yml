@@ -1,4 +1,6 @@
-# CI Pipeline for FastAPI Transaction Classifier
+# CI Pipeline for FastAPI Transaction Classifier - FIXED VERSION
+# This is a completely new workflow file to avoid GitHub Actions caching issues
+name: CI-FixedI Pipeline for FastAPI Transaction Classifier
 # Updated: 2025-05-30 - Fixed requirements.txt file path issues - FORCE REFRESH
 name: CI
 

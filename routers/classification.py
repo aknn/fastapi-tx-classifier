@@ -5,6 +5,7 @@ import json
 import time
 import logging
 from prometheus_client import Histogram, Counter  # Import Counter
+from typing import Any
 
 # Import the new classification logic
 from classification_logic import classify_transaction_detailed
@@ -40,7 +41,7 @@ logger = logging.getLogger("app")
     summary="Classify a transaction text",
 )
 async def classify_transaction_route(
-    request: TransactionRequest, redis=Depends(redis_client.get_redis)
+    request: TransactionRequest, redis: Any = Depends(redis_client.get_redis)
 ) -> TransactionResponse:
     start_time = time.perf_counter()
     amount_str = f"{request.amount:.2f}" if request.amount is not None else "0.00"
@@ -99,8 +100,10 @@ async def classify_transaction_route(
     transaction_id = await redis.incr("tx:id_counter")
 
     # Pass the transaction amount into classification logic
+    # Handle None amount by defaulting to 0.0
+    amount = request.amount if request.amount is not None else 0.0
     category, confidence, hit_type = await classify_transaction_detailed(
-        request.text, request.amount
+        request.text, amount
     )
 
     transaction = Transaction(
@@ -115,7 +118,8 @@ async def classify_transaction_route(
         f"Transaction classified as {category.value} via {hit_type} ({confidence:.2f})"
     )
     # This is the object returned to the user
-    response_data = TransactionResponse(transaction=transaction, message=message)
+    response_data = TransactionResponse(
+        transaction=transaction, message=message)
     # This is what gets stored in the classification cache (keyed by text+amount)
     # Use .dict() for older Pydantic or .model_dump() for v2
     result_data_for_cache = response_data.model_dump()

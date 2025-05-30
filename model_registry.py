@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Tuple, Dict, List, Type
+from typing import Tuple, Dict, List, Type, Callable
 from models import TransactionCategory
 
 # --- Model Interface Definition ---
@@ -21,7 +21,7 @@ class ModelInterface(ABC):
 _model_registry: Dict[str, ModelInterface] = {}
 
 
-def register_model(name: str):
+def register_model(name: str) -> Callable[[Type[ModelInterface]], Type[ModelInterface]]:
     """
     Decorator to register a model class under a given name.
     Instantiates and stores the model in the registry.

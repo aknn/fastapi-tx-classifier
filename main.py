@@ -9,12 +9,14 @@ from routers.transactions import router as transactions_router
 from routers.system import router as system_router
 from exceptions import AppError
 import logging
+from typing import Callable, Any
 
 settings = Settings()
 
 logger = logging.getLogger("app")
 handler = logging.StreamHandler()
-fmt = jsonlogger.JsonFormatter("%(asctime)s %(levelname)s %(name)s %(message)s")
+fmt = jsonlogger.JsonFormatter(
+    "%(asctime)s %(levelname)s %(name)s %(message)s")
 handler.setFormatter(fmt)
 logger.addHandler(handler)
 logger.setLevel(getattr(logging, settings.log_level.upper(), logging.INFO))
@@ -25,12 +27,12 @@ app = FastAPI()
 
 
 @app.get("/api/valid-endpoint")
-async def api_valid_endpoint():
+async def api_valid_endpoint() -> dict:
     return {"message": "OK"}
 
 
 @app.post("/api/endpoint")
-async def api_generic_endpoint(data: dict = Body(...)):
+async def api_generic_endpoint(data: dict = Body(...)) -> dict:
     # Reject empty payload
     if not data:
         raise HTTPException(status_code=400, detail={})
@@ -41,17 +43,17 @@ async def api_generic_endpoint(data: dict = Body(...)):
 
 
 @app.get("/", response_model=dict)
-async def home():
+async def home() -> dict:
     return {"message": "Hello"}
 
 
 @app.get("/about", response_model=dict)
-async def about():
+async def about() -> dict:
     return {"message": "This is the about page."}
 
 
 @app.middleware("http")
-async def catch_exceptions(request: Request, call_next):
+async def catch_exceptions(request: Request, call_next: Callable[[Request], Any]) -> Any:
     try:
         return await call_next(request)
     except AppError as ae:
@@ -75,4 +77,5 @@ app.include_router(transactions_router)
 app.include_router(system_router)
 
 if __name__ == "__main__":
-    uvicorn_run("main:app", host=settings.app_host, port=settings.app_port, reload=True)
+    uvicorn_run("main:app", host=settings.app_host,
+                port=settings.app_port, reload=True)

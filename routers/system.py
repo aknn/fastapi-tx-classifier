@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, status
-from typing import Dict
+from typing import Dict, Any
 from fastapi.responses import JSONResponse, Response as PrometheusResponse
 from redis_client import get_redis
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
@@ -21,7 +21,7 @@ def health() -> JSONResponse:
     response_model=Dict[str, bool],
     summary="Readiness probe",
 )
-async def ready(redis=Depends(get_redis)) -> JSONResponse:
+async def ready(redis: Any = Depends(get_redis)) -> JSONResponse:
     try:
         await redis.ping()
         return JSONResponse({"ready": True}, status_code=status.HTTP_200_OK)

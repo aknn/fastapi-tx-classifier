@@ -3,6 +3,7 @@ import logging
 from fastapi import APIRouter, Depends
 from pydantic import ValidationError
 from redis.asyncio import Redis
+from typing import Dict, Any
 
 from models import Transaction, TransactionCategory
 import redis_client
@@ -12,12 +13,13 @@ logger = logging.getLogger(__name__)
 
 
 @router.get("/transactions")
-async def list_transactions(redis: Redis = Depends(redis_client.get_redis)):
+async def list_transactions(redis: Redis = Depends(redis_client.get_redis)) -> Dict[str, Any]:
     """Lists all stored transactions."""
     transactions = {}
     # Fetch all keys and filter numeric transaction IDs
     keys = await redis.keys("tx:*")
-    tx_keys = [k for k in keys if k.startswith("tx:") and k.split(":")[1].isdigit()]
+    tx_keys = [k for k in keys if k.startswith(
+        "tx:") and k.split(":")[1].isdigit()]
     if not tx_keys:
         return {"message": "No transactions found"}
     values = await redis.mget(*tx_keys)
@@ -38,13 +40,14 @@ async def list_transactions(redis: Redis = Depends(redis_client.get_redis)):
 
 
 @router.get("/transaction-stats")
-async def transaction_stats(redis: Redis = Depends(redis_client.get_redis)):
+async def transaction_stats(redis: Redis = Depends(redis_client.get_redis)) -> Dict[str, Any]:
     """Calculates statistics based on transaction categories."""
     # Initialize counts to zero
     category_counts = {cat.value: 0 for cat in TransactionCategory}
     # Fetch all transaction keys
     keys = await redis.keys("tx:*")
-    tx_keys = [k for k in keys if k.startswith("tx:") and k.split(":")[1].isdigit()]
+    tx_keys = [k for k in keys if k.startswith(
+        "tx:") and k.split(":")[1].isdigit()]
     if not tx_keys:
         return {"message": "No transactions found"}
     # Count categories

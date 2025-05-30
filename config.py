@@ -3,22 +3,22 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    redis_url: str = Field("redis://localhost:6379/0", env="REDIS_URL")
-    log_level: str = Field("INFO", env="LOG_LEVEL")
-    app_host: str = Field("0.0.0.0", env="APP_HOST")
-    app_port: int = Field(5000, env="APP_PORT")
-    testing: bool = Field(False, env="TESTING")
+    redis_url: str = Field(default="redis://localhost:6379/0")
+    log_level: str = Field(default="INFO")
+    app_host: str = Field(default="0.0.0.0")
+    app_port: int = Field(default=5000)
+    testing: bool = Field(default=False)
     # MLflow tracking URI using local file store
-    mlflow_tracking_uri: str = Field("file:./mlruns", env="MLFLOW_TRACKING_URI")
+    mlflow_tracking_uri: str = Field(default="file:./mlruns")
     mlflow_experiment_name: str = Field(
-        "classification_experiments", env="MLFLOW_EXPERIMENT_NAME"
+        default="classification_experiments"
     )  # Default experiment name
 
     class Config:
         env_file = ".env"
 
     @classmethod
-    def for_testing(cls):
+    def for_testing(cls) -> "Settings":
         """Return settings configured for testing environment"""
         return cls(
             testing=True, redis_url="redis://localhost:6379/1"

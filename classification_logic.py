@@ -45,7 +45,7 @@ def load_config() -> Dict[str, Any]:
             return default_config
 
         with open(CONFIG_FILE, "r") as f:
-            config = json.load(f)
+            config: Dict[str, Any] = json.load(f)
             # Validate basic structure
             required_keys = [
                 "overrides",
@@ -137,7 +137,8 @@ def normalize_text(text: str) -> List[str]:
     text = re.sub(r"[^a-z\s]", "", text)
 
     if not _nlp:  # Fallback if spacy model isn't loaded
-        tokens = [word for word in text.split() if word and word not in STOP_WORDS]
+        tokens = [word for word in text.split(
+        ) if word and word not in STOP_WORDS]
         return tokens
 
     # 4. Use spaCy for tokenization and lemmatization
@@ -258,7 +259,8 @@ async def classify_transaction_detailed(
     if matched_categories:
         # If multiple categories match via single keywords, maybe return OTHER or prioritize?
         # For now, just take the first one alphabetically by category name for consistency.
-        chosen_category = sorted(list(matched_categories), key=lambda c: c.value)[0]
+        chosen_category = sorted(
+            list(matched_categories), key=lambda c: c.value)[0]
         classification_hits.labels(hit_type="token_match").inc()
         # Confidence slightly lower than phrase match
         return chosen_category, 0.9, "token_match"
@@ -297,5 +299,5 @@ class RuleBasedModel(ModelInterface):
     Rule-based classifier model using classify_transaction_detailed logic.
     """
 
-    async def classify(self, text: str, amount: float):
+    async def classify(self, text: str, amount: float) -> Tuple[TransactionCategory, float, str]:
         return await classify_transaction_detailed(text, amount)

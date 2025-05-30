@@ -5,11 +5,11 @@ This script tests the key components that were fixed.
 """
 
 from config import Settings
-from models import TransactionRequest, TransactionCategory
+from models import TransactionRequest
 from typing import Optional
 
 
-def test_config():
+def test_config() -> None:
     """Test that Settings can be instantiated."""
     settings = Settings()
     print(f"✓ Settings loaded with redis_url: {settings.redis_url}")
@@ -19,7 +19,7 @@ def test_config():
     print(f"✓ Test settings created with testing={test_settings.testing}")
 
 
-def test_models():
+def test_models() -> None:
     """Test that models work correctly."""
     # Test TransactionRequest with optional amount
     req1 = TransactionRequest(text="Coffee shop purchase")
@@ -31,7 +31,7 @@ def test_models():
         f"✓ TransactionRequest with amount: {req2.text}, amount={req2.amount}")
 
 
-def test_amount_handling():
+def test_amount_handling() -> None:
     """Test amount handling logic similar to what was fixed in routers."""
     def handle_amount(amount: Optional[float]) -> float:
         return amount if amount is not None else 0.0

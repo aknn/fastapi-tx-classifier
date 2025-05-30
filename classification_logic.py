@@ -3,7 +3,7 @@ import re
 import spacy
 from rapidfuzz import process, fuzz
 from models import TransactionCategory
-from typing import Tuple, Dict, List, Any
+from typing import Tuple, Dict, List, Any, Union
 from prometheus_client import Counter
 import logging
 import os
@@ -105,6 +105,7 @@ FUZZY_THRESHOLD = config["fuzzy_threshold"]
 FLAT_KEYWORDS = config["flat_keywords"]
 
 # --- NLP Setup ---
+_nlp: Union[Any, None]
 try:
     # Disable components not needed for lemmatization/tokenization
     _nlp = spacy.load("en_core_web_sm", disable=["parser", "ner"])

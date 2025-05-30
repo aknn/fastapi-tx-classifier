@@ -35,19 +35,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          echo "--- Checking for requirements files ---"
-          ls -la *requirements*.txt || echo "No requirements files found with ls"
           echo "--- Installing dependencies ---"
-          if [ -f "dev-requirements.txt" ]; then
-            echo "Found dev-requirements.txt. Installing dev dependencies (which includes requirements.txt)..."
-            pip install -v -r dev-requirements.txt
-          elif [ -f "requirements.txt" ]; then
-            echo "Found requirements.txt. Installing base dependencies..."
-            pip install -v -r requirements.txt
-          else
-            echo "No requirements files found. Installing minimal dependencies..."
-            pip install fastapi uvicorn pytest
-          fi
+          # install dev requirements, else base requirements, else minimal dependencies
+          pip install -v -r dev-requirements.txt || pip install -v -r requirements.txt || pip install -v fastapi uvicorn pytest
           echo "--- Downloading spacy model en_core_web_sm ---"
           python -m spacy download en_core_web_sm
 

@@ -1,5 +1,5 @@
 # CI Pipeline for FastAPI Transaction Classifier
-# Updated: 2025-05-30 - Fixed requirements.txt file path issues
+# Updated: 2025-05-30 - Fixed requirements.txt file path issues - FORCE REFRESH
 name: CI
 
 on:

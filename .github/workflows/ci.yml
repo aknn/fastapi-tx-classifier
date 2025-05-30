@@ -68,7 +68,7 @@ jobs:
       - name: Lint with black
         run: |
           echo "--- Ensuring black is installed ---"
-          python -m pip install black==24.1.1
+          python -m pip install --upgrade black==24.1.1
           python -m black --check .
 
       - name: Lint with ruff

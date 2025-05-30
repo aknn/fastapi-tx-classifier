@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          path: fastapi_tx_classifier
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -70,11 +68,10 @@ jobs:
           # Install ruff to the global site-packages, not --user
           python -m pip install ruff
           echo "PATH after: $PATH"
-          # Run ruff from the correct directory if code is in fastapi_tx_classifier
-          python -m ruff check fastapi_tx_classifier
+          # Run ruff check on the current directory
+          python -m ruff check .
 
       - name: Type check with mypy
-        working-directory: fastapi_tx_classifier
         run: |
           echo "--- Ensuring mypy is installed ---"
           python -m pip install mypy

@@ -78,4 +78,31 @@ open http://localhost:8000/docs
 | Throughput                 | 500 req/s           |
 | Cold-start                 | <1 s                |
 | Model refresh cadence      | nightly, 5k tx window |
+
+## Development
+
+For development setup, code formatting, testing, and contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+### Quick Start for Developers
+
+1. **Install dependencies:**
+   ```bash
+   pip install -r dev-requirements.txt
+   ```
+
+2. **Install pre-commit hooks:**
+   ```bash
+   pre-commit install
+   ```
+
+3. **Run tests:**
+   ```bash
+   pytest
+   ```
+
+4. **Format code:**
+   ```bash
+   python -m black .
+   ```
+
 # Trigger new workflows

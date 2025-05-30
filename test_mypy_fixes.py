@@ -23,16 +23,15 @@ def test_models() -> None:
     """Test that models work correctly."""
     # Test TransactionRequest with optional amount
     req1 = TransactionRequest(text="Coffee shop purchase")
-    print(
-        f"✓ TransactionRequest without amount: {req1.text}, amount={req1.amount}")
+    print(f"✓ TransactionRequest without amount: {req1.text}, amount={req1.amount}")
 
     req2 = TransactionRequest(text="Grocery store", amount=25.50)
-    print(
-        f"✓ TransactionRequest with amount: {req2.text}, amount={req2.amount}")
+    print(f"✓ TransactionRequest with amount: {req2.text}, amount={req2.amount}")
 
 
 def test_amount_handling() -> None:
     """Test amount handling logic similar to what was fixed in routers."""
+
     def handle_amount(amount: Optional[float]) -> float:
         return amount if amount is not None else 0.0
 

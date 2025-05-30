@@ -15,8 +15,7 @@ settings = Settings()
 
 logger = logging.getLogger("app")
 handler = logging.StreamHandler()
-fmt = jsonlogger.JsonFormatter(
-    "%(asctime)s %(levelname)s %(name)s %(message)s")
+fmt = jsonlogger.JsonFormatter("%(asctime)s %(levelname)s %(name)s %(message)s")
 handler.setFormatter(fmt)
 logger.addHandler(handler)
 logger.setLevel(getattr(logging, settings.log_level.upper(), logging.INFO))
@@ -53,7 +52,9 @@ async def about() -> dict:
 
 
 @app.middleware("http")
-async def catch_exceptions(request: Request, call_next: Callable[[Request], Any]) -> Any:
+async def catch_exceptions(
+    request: Request, call_next: Callable[[Request], Any]
+) -> Any:
     try:
         return await call_next(request)
     except AppError as ae:
@@ -77,5 +78,4 @@ app.include_router(transactions_router)
 app.include_router(system_router)
 
 if __name__ == "__main__":
-    uvicorn_run("main:app", host=settings.app_host,
-                port=settings.app_port, reload=True)
+    uvicorn_run("main:app", host=settings.app_host, port=settings.app_port, reload=True)

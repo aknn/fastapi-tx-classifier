@@ -28,7 +28,9 @@ def _mock_get(url: str, **kwargs: Any) -> DummyResponse:
     return DummyResponse(response)
 
 
-def _mock_post(url: str, json: Any = None, data: Any = None, **kwargs: Any) -> DummyResponse:
+def _mock_post(
+    url: str, json: Any = None, data: Any = None, **kwargs: Any
+) -> DummyResponse:
     path = url.replace("http://example.com", "")
     # invalid JSON in data
     if data is not None and json is None:
@@ -63,13 +65,11 @@ class TestApiEndpoints(unittest.TestCase):
 
     def test_edge_case_large_payload(self):
         large_payload = {"data": "x" * 10000}
-        response = requests.post(
-            "http://example.com/api/endpoint", json=large_payload)
+        response = requests.post("http://example.com/api/endpoint", json=large_payload)
         self.assertEqual(response.status_code, 413)
 
     def test_edge_case_invalid_json(self):
-        response = requests.post(
-            "http://example.com/api/endpoint", data="not a json")
+        response = requests.post("http://example.com/api/endpoint", data="not a json")
         self.assertEqual(response.status_code, 400)
 
 

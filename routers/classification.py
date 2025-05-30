@@ -118,8 +118,7 @@ async def classify_transaction_route(
         f"Transaction classified as {category.value} via {hit_type} ({confidence:.2f})"
     )
     # This is the object returned to the user
-    response_data = TransactionResponse(
-        transaction=transaction, message=message)
+    response_data = TransactionResponse(transaction=transaction, message=message)
     # This is what gets stored in the classification cache (keyed by text+amount)
     # Use .dict() for older Pydantic or .model_dump() for v2
     result_data_for_cache = response_data.model_dump()

@@ -69,14 +69,8 @@ jobs:
         run: |
           echo "--- Ensuring black is installed ---"
           python -m pip install black
-          echo "--- Checking for formatting issues ---"
-          if python -m black --check . ; then
-            echo "All files are properly formatted"
-          else
-            echo "Files need reformatting, applying black formatting..."
-            python -m black .
-            echo "Black formatting applied successfully"
-          fi
+          echo "--- Checking code formatting with black ---"
+          python -m black --check --diff .
 
       - name: Lint with ruff
         shell: bash

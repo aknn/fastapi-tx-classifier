@@ -65,6 +65,11 @@ jobs:
           python -m black --diff .
         continue-on-error: true # Allow this step to fail without stopping the workflow
 
+      - name: Upgrade black to pinned version
+        run: |
+          echo "--- Installing black==24.1.1 ---"
+          python -m pip install --upgrade black==24.1.1
+
       - name: Lint with black
         run: |
           echo "--- Verifying black version before linting ---"

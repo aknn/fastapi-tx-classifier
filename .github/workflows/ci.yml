@@ -23,6 +23,9 @@ jobs:
           ls -la
           echo "Looking for requirements files:"
           find . -name "*requirements*.txt" -type f
+          echo "Testing file access:"
+          test -f requirements.txt && echo "requirements.txt exists and is readable" || echo "requirements.txt NOT accessible"
+          test -f dev-requirements.txt && echo "dev-requirements.txt exists and is readable" || echo "dev-requirements.txt NOT accessible"
 
       - name: Set up Python
         uses: actions/setup-python@v5

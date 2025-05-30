@@ -1,0 +1,100 @@
+# CI Pipeline for FastAPI Transaction Classifier
+# Updated: 2025-05-30 - Fixed requirements.txt file path issues - FORCE REFRESH
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Debug - List files in workspace
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory:"
+          ls -la
+          echo "Looking for requirements files:"
+          find . -name "*requirements*.txt" -type f
+          echo "Testing file access:"
+          test -f "requirements.txt" && echo "requirements.txt exists and is readable" || echo "requirements.txt NOT accessible"
+          test -f "dev-requirements.txt" && echo "dev-requirements.txt exists and is readable" || echo "dev-requirements.txt NOT accessible"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          echo "--- Checking for requirements files ---"
+          ls -la *requirements*.txt || echo "No requirements files found with ls"
+          echo "--- Installing dependencies ---"
+          if [ -f "dev-requirements.txt" ]; then
+            echo "Found dev-requirements.txt. Installing dev dependencies (which includes requirements.txt)..."
+            pip install -v -r dev-requirements.txt
+          elif [ -f "requirements.txt" ]; then
+            echo "Found requirements.txt. Installing base dependencies..."
+            pip install -v -r requirements.txt
+          else
+            echo "No requirements files found. Installing minimal dependencies..."
+            pip install fastapi uvicorn pytest
+          fi
+          echo "--- Downloading spacy model en_core_web_sm ---"
+          python -m spacy download en_core_web_sm
+
+      - name: Verify black installation
+        run: |
+          echo "--- Verifying black installation ---"
+          python -m black --version
+
+      - name: Verify installed packages
+        run: |
+          echo "--- PYTHON VERSION AND EXECUTABLE ---"
+          python --version
+          which python
+          echo "--- PIP FREEZE ---"
+          pip freeze
+          echo "--- TRYING TO IMPORT SPACY IN PYTHON ---"
+          python -c "import sys; print(f'Python sys.path: {sys.path}'); import spacy; print('Spacy imported successfully'); print(f'Spacy version: {spacy.__version__}'); print(f'Spacy path: {spacy.__path__}')"
+
+      - name: Run tests
+        run: pytest --maxfail=1 --disable-warnings --quiet
+
+      - name: Show Black diff
+        run: |
+          echo "--- Showing black diff ---"
+          python -m black --diff .
+        continue-on-error: true # Allow this step to fail without stopping the workflow
+
+      - name: Lint with black
+        run: |
+          echo "--- Ensuring black is installed ---"
+          python -m pip install black
+          python -m black --check .
+
+      - name: Lint with ruff
+        shell: bash
+        run: |
+          echo "PATH before: $PATH"
+          python -m pip install --upgrade pip
+          # Install ruff to the global site-packages, not --user
+          python -m pip install ruff
+          echo "PATH after: $PATH"
+          # Run ruff check on the current directory
+          python -m ruff check .
+
+      - name: Type check with mypy
+        run: |
+          echo "--- Ensuring mypy is installed ---"
+          python -m pip install mypy
+          echo "--- Running mypy type check ---"
+          python -m mypy .

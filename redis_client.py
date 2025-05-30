@@ -27,6 +27,10 @@ class InMemoryStore:
         self._store[key] = val
         return val
 
+    async def ping(self) -> bool:
+        """Mock ping method for compatibility with Redis client"""
+        return True
+
     async def mget(self, *keys: str) -> List[Optional[str]]:
         return [self._store.get(k) for k in keys]
 

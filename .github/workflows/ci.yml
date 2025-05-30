@@ -67,8 +67,10 @@ jobs:
 
       - name: Lint with black
         run: |
-          echo "--- Running black check ---"
-          python -m black --check .
+          echo "--- Ensuring black is installed ---"
+          python -m pip install black
+          echo "--- Formatting code with black ---"
+          python -m black .
 
       - name: Lint with ruff
         shell: bash

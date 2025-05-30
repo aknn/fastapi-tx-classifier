@@ -2,11 +2,12 @@ import requests
 import argparse
 import logging
 import json  # Add missing import
+from typing import Optional, Dict, Any
 
 logging.basicConfig(level=logging.INFO)
 
 
-def test_endpoint(url, method, data=None):
+def test_endpoint(url: str, method: str, data: Optional[Dict[str, Any]] = None) -> None:
     try:
         if method.lower() == "get":
             response = requests.get(url)
@@ -22,7 +23,7 @@ def test_endpoint(url, method, data=None):
         logging.error("Error testing endpoint %s: %s", url, e)
 
 
-def run_predefined_tests(base_url):
+def run_predefined_tests(base_url: str) -> None:
     logging.info("Running predefined test cases...")
     # Test 1: Get all transactions
     test_endpoint(f"{base_url}/transactions/", "get")
@@ -46,7 +47,7 @@ def run_predefined_tests(base_url):
     test_endpoint(f"{base_url}/transactions/", "post", {"merchant": "No Amount"})
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="API Tester")
     parser.add_argument("url", type=str, help="API endpoint URL")
     parser.add_argument(

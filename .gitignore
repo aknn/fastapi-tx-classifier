@@ -19,6 +19,7 @@ mlruns/
 .dvc/
 .dvcignore
 dvc.lock
+dvc_storage/
 dvc.yaml
 
 # DVC remote storage

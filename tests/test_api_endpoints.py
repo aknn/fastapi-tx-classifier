@@ -1,7 +1,7 @@
 import unittest
 import json as _json
 from fastapi.testclient import TestClient
-from main import app
+from fastapi_tx_classifier.main import app
 import requests
 from typing import Any
 

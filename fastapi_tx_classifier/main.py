@@ -2,12 +2,12 @@ from fastapi import FastAPI, Request, HTTPException, Body
 from fastapi.responses import JSONResponse
 from pythonjsonlogger import jsonlogger
 from uvicorn import run as uvicorn_run
-from config import Settings
-from routers.messages import router as messages_router
-from routers.classification import router as classification_router
-from routers.transactions import router as transactions_router
-from routers.system import router as system_router
-from exceptions import AppError
+from .config import Settings
+from .routers.messages import router as messages_router
+from .routers.classification import router as classification_router
+from .routers.transactions import router as transactions_router
+from .routers.system import router as system_router
+from .exceptions import AppError
 import logging
 from typing import Callable, Any
 

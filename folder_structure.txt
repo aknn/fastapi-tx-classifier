@@ -1,0 +1,72 @@
+FastAPI Template Project Structure (Cleaned Up)
+===============================================
+
+/workspaces/fastapi-template/
+├── CONTRIBUTING.md
+├── ML_PHASES.md
+├── README.md
+├── classification_config.json
+├── data/                            # Data directory
+├── dev-requirements.txt
+├── fastapi_tx_classifier/           # ✅ Main package (single source of truth)
+│   ├── __init__.py
+│   ├── classification_logic.py
+│   ├── config.py
+│   ├── exceptions.py
+│   ├── main.py                      # ✅ FastAPI app with relative imports
+│   ├── model_registry.py
+│   ├── models.py
+│   ├── mypy.ini
+│   ├── redis_client.py
+│   └── routers/                     # ✅ All routers use relative imports
+│       ├── __init__.py
+│       ├── classification.py
+│       ├── messages.py
+│       ├── system.py
+│       └── transactions.py
+├── folder_structure.txt             # This file
+├── main.py                          # ✅ Simple entrypoint importing from package
+├── pyproject.toml
+├── requirements.txt
+├── scripts/
+│   └── api_tester.py
+├── test_ci_formatting.md
+├── test_mypy_fixes.py              # ✅ Updated to import from package
+└── tests/                          # ✅ Consolidated test directory
+    ├── __init__.py
+    ├── conftest.py                 # ✅ Updated to import from package
+    ├── test_api_endpoints.py       # ✅ Updated to import from package
+    ├── test_main.py
+    └── test_transactions.py        # ✅ Updated to import from package
+
+CLEANUP COMPLETED ✅
+===================
+
+✅ Removed duplicate files:
+   - classification_logic.py, config.py, exceptions.py (root level)
+   - models.py, model_registry.py, redis_client.py (root level)
+   - routers/ directory (root level)
+   - fastapi_tx_classifier/tests/ directory
+   - fastapi_tx_classifier/test_mypy_fixes.py
+   - mypy.ini (root level - kept package version)
+
+✅ Updated all imports to use package structure:
+   - Package modules use relative imports (from .module import ...)
+   - Tests import from fastapi_tx_classifier.module
+   - Root main.py imports from fastapi_tx_classifier.main
+
+✅ Removed MLflow artifacts:
+   - mlruns/ and dvc_storage/ added to .gitignore
+   - Directories removed from workspace
+
+✅ Simplified entrypoint:
+   - Root main.py now just imports and runs the package app
+   - Clear separation between entrypoint and application logic
+
+BENEFITS:
+- Single source of truth for all modules
+- No duplicate code between root and package
+- Clean package structure with proper relative imports
+- Easy to run: python main.py or python -m fastapi_tx_classifier.main
+- Easy to test: pytest tests/
+- Easy to install as package: pip install -e .

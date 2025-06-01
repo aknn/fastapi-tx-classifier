@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
-from main import app
-import redis_client
+from fastapi_tx_classifier.main import app
+import fastapi_tx_classifier.redis_client as redis_client
 
 # Override Redis dependency with fresh in-memory store per test
 default_store = None

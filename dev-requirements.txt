@@ -6,4 +6,5 @@ black
 ruff
 mypy
 types-requests
+types-redis
 pre-commit

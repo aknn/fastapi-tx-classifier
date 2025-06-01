@@ -1,10 +1,10 @@
 import redis.asyncio as redis
-from config import Settings
+from .config import Settings
 import logging
 import fnmatch
-from typing import Optional, List, Any
+from typing import Optional, List, Any, Union
 
-_redis = None
+_redis: Optional[Union[redis.Redis, "InMemoryStore"]] = None
 
 logger = logging.getLogger("app")
 
@@ -45,7 +45,7 @@ class InMemoryStore:
         self._store.clear()
 
 
-async def get_redis() -> Any:
+async def get_redis() -> Union[redis.Redis, InMemoryStore]:
     global _redis
     settings = Settings()
     if settings.testing:

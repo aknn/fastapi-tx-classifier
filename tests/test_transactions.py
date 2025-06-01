@@ -1,4 +1,4 @@
-from models import TransactionCategory
+from fastapi_tx_classifier.models import TransactionCategory
 
 # client is now provided as a fixture from conftest.py
 

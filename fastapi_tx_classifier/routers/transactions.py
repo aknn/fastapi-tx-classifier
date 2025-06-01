@@ -5,8 +5,8 @@ from pydantic import ValidationError
 from redis.asyncio import Redis
 from typing import Dict, Any
 
-from models import Transaction, TransactionCategory
-import redis_client
+from ..models import Transaction, TransactionCategory
+from .. import redis_client
 
 router = APIRouter()
 logger = logging.getLogger(__name__)

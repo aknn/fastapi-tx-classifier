@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Body
 from typing import Dict
-from models import MsgPayload, MsgRequestPayload
+from ..models import MsgPayload, MsgRequestPayload
 
 router = APIRouter(prefix="/messages", tags=["messages"])
 

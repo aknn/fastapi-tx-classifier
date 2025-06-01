@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status
 from typing import Dict, Any
 from fastapi.responses import JSONResponse, Response as PrometheusResponse
-from redis_client import get_redis
+from ..redis_client import get_redis
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 
 router = APIRouter(tags=["system"])

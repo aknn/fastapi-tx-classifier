@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Tuple, Dict, List, Type, Callable
-from models import TransactionCategory
+from .models import TransactionCategory
 
 # --- Model Interface Definition ---
 

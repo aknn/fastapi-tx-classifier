@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
-from models import TransactionRequest, Transaction, TransactionResponse
-import redis_client
+from ..models import TransactionRequest, Transaction, TransactionResponse
+from .. import redis_client
 import json
 import time
 import logging
@@ -8,8 +8,8 @@ from prometheus_client import Histogram, Counter  # Import Counter
 from typing import Any
 
 # Import the new classification logic
-from classification_logic import classify_transaction_detailed
-from config import Settings
+from ..classification_logic import classify_transaction_detailed
+from ..config import Settings
 import mlflow
 
 # Initialize MLflow tracking

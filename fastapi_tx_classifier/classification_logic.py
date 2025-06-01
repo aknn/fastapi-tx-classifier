@@ -2,12 +2,12 @@ import json
 import re
 import spacy
 from rapidfuzz import process, fuzz
-from models import TransactionCategory
+from .models import TransactionCategory
 from typing import Tuple, Dict, List, Any, Union
 from prometheus_client import Counter
 import logging
 import os
-from model_registry import ModelInterface, register_model
+from .model_registry import ModelInterface, register_model
 
 # --- Configuration Loading ---
 CONFIG_FILE = os.path.join(

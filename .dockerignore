@@ -1,0 +1,65 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# MLflow (keep structure but not runs)
+mlruns/*
+!mlruns/.gitkeep
+
+# Data
+data/
+*.log
+
+# Development
+.pre-commit-config.yaml
+dev-requirements.txt
+CONTRIBUTING.md
+test_ci_formatting.md
+ML_PHASES.md
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore

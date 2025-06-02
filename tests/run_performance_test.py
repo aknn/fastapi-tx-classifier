@@ -11,7 +11,7 @@ if __name__ == "__main__":
     try:
         result = subprocess.run(
             [sys.executable, "test_rule_based_performance.py"],
-            cwd="/workspaces/fastapi-template",
+            cwd="/workspaces/fastapi-template/tests",
         )
 
         if result.returncode == 0:

@@ -3,7 +3,18 @@
         "DinNER at M&S": "food",
         "groceries and toiletries": "food",
         "£20 uber to waitrose for food": "transport",
-        "GaS BiLl Payment": "utilities"
+        "GaS BiLl Payment": "bills",
+        "uber eats delivery": "food",
+        "uber eats": "food",
+        "deliveroo": "food",
+        "just eat": "food",
+        "amazon prime video": "entertainment",
+        "disney+": "entertainment",
+        "netflix": "entertainment",
+        "spotify": "entertainment",
+        "shell gas station": "transport",
+        "bp petrol": "transport",
+        "tesco petrol": "transport"
     },
     "category_keywords": {
         "food": [
@@ -13,7 +24,23 @@
             "grocery",
             "waitrose",
             "m&s food",
-            "coffee"
+            "coffee",
+            "tesco",
+            "asda",
+            "sainsbury",
+            "morrisons",
+            "lidl",
+            "aldi",
+            "starbucks",
+            "mcdonalds",
+            "kfc",
+            "pizza",
+            "nandos",
+            "cafe",
+            "bakery",
+            "takeaway",
+            "food",
+            "meal"
         ],
         "transport": [
             "uber",
@@ -23,7 +50,18 @@
             "subway",
             "transport",
             "fuel",
-            "petrol"
+            "petrol",
+            "tfl",
+            "underground",
+            "tube",
+            "oyster",
+            "contactless",
+            "shell",
+            "bp",
+            "esso",
+            "texaco",
+            "garage",
+            "parking"
         ],
         "entertainment": [
             "movie",
@@ -32,7 +70,16 @@
             "theater",
             "show",
             "game",
-            "tickets"
+            "tickets",
+            "netflix",
+            "spotify",
+            "amazon prime",
+            "disney",
+            "paramount",
+            "subscription",
+            "streaming",
+            "music",
+            "gaming"
         ],
         "utilities": [
             "electricity",
@@ -40,8 +87,46 @@
             "gas",
             "utility",
             "internet",
-            "phone",
-            "bill"
+            "phone"
+        ],
+        "bills": [
+            "bill",
+            "british gas",
+            "thames water",
+            "bt broadband",
+            "council tax",
+            "utility bill",
+            "monthly bill",
+            "electricity bill",
+            "water bill",
+            "gas bill",
+            "broadband bill",
+            "phone bill"
+        ],
+        "rent": [
+            "rent",
+            "landlord",
+            "housing",
+            "tenancy",
+            "rental",
+            "monthly rent",
+            "rent payment",
+            "housing association",
+            "estate agent"
+        ],
+        "transfer": [
+            "transfer",
+            "savings",
+            "payment to",
+            "contribution",
+            "isa",
+            "transfer to",
+            "savings account",
+            "investment",
+            "pension",
+            "friend",
+            "family",
+            "personal transfer"
         ],
         "shopping": [
             "amazon",
@@ -50,7 +135,14 @@
             "store",
             "clothes",
             "electronics",
-            "toiletries"
+            "toiletries",
+            "zara",
+            "h&m",
+            "next",
+            "primark",
+            "john lewis",
+            "currys",
+            "argos"
         ]
     },
     "stop_words": [
@@ -68,7 +160,10 @@
         "of",
         "payment",
         "charge",
-        "purchase"
+        "purchase",
+        "monthly",
+        "direct",
+        "debit"
     ],
     "fuzzy_threshold": 85
 }

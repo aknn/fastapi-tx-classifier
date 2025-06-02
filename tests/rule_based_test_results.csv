@@ -8,30 +8,30 @@ Pizza Express Dinner,35.0,Food,food,0.9,token_match,True
 groceries and toiletries,25.0,Food,food,1.0,override,True
 DinNER at M&S,10.0,Food,food,1.0,override,True
 Uber Ride to Airport,12.3,Transport,transport,0.9,token_match,True
-Shell Gas Station,40.0,Transport,transport,1.0,override,True
-London Underground TfL,15.0,Transport,transport,0.9,token_match,True
+Shell Gas Station,40.0,Transport,utilities,0.9,token_match,False
+London Underground TfL,15.0,Transport,other,0.6,default_other,False
 BP Petrol Station,55.0,Transport,transport,0.9,token_match,True
 £20 uber to waitrose for food,20.0,Transport,transport,1.0,override,True
-Uber Eats Delivery,18.5,Food,food,1.0,override,True
+Uber Eats Delivery,18.5,Food,transport,0.9,token_match,False
 Netflix Monthly Subscription,15.99,Entertainment,entertainment,0.9,token_match,True
 Spotify Premium,9.99,Entertainment,entertainment,0.9,token_match,True
 Cinema Tickets Vue,24.0,Entertainment,entertainment,0.9,token_match,True
-Amazon Prime Video,8.99,Entertainment,entertainment,1.0,override,True
+Amazon Prime Video,8.99,Entertainment,shopping,0.9,token_match,False
 Movie Uber Night,15.0,Entertainment,entertainment,0.9,token_match,True
 Amazon UK Purchase,45.99,Shopping,shopping,0.9,token_match,True
 Apple Store,89.0,Shopping,shopping,0.9,token_match,True
-John Lewis Department Store,125.5,Shopping,shopping,1.0,phrase_match,True
-Zara Fashion,79.99,Shopping,shopping,0.9,token_match,True
-British Gas Electricity Bill,75.0,Bills,bills,1.0,phrase_match,True
-Thames Water Bill,45.0,Bills,bills,1.0,phrase_match,True
-BT Broadband Monthly,32.99,Bills,bills,1.0,phrase_match,True
-Council Tax Payment,150.0,Bills,bills,1.0,phrase_match,True
-GaS BiLl Payment,50.0,Utilities,bills,1.0,override,False
-London Rent Payment Landlord,1200.0,Rent,rent,0.9,token_match,True
-Monthly Rent Direct Debit,1200.0,Rent,rent,0.9,token_match,True
-Transfer to Savings Account,200.0,Transfer,transfer,0.9,token_match,True
-Payment to Friend,50.0,Transfer,transfer,0.9,token_match,True
-ISA Monthly Contribution,500.0,Transfer,transfer,0.9,token_match,True
+John Lewis Department Store,125.5,Shopping,shopping,0.9,token_match,True
+Zara Fashion,79.99,Shopping,other,0.6,default_other,False
+British Gas Electricity Bill,75.0,Bills,utilities,0.9,token_match,False
+Thames Water Bill,45.0,Bills,utilities,0.9,token_match,False
+BT Broadband Monthly,32.99,Bills,other,0.6,default_other,False
+Council Tax Payment,150.0,Bills,other,0.6,default_other,False
+GaS BiLl Payment,50.0,Utilities,utilities,1.0,override,True
+London Rent Payment Landlord,1200.0,Rent,other,0.6,default_other,False
+Monthly Rent Direct Debit,1200.0,Rent,other,0.6,default_other,False
+Transfer to Savings Account,200.0,Transfer,other,0.6,default_other,False
+Payment to Friend,50.0,Transfer,other,0.6,default_other,False
+ISA Monthly Contribution,500.0,Transfer,other,0.6,default_other,False
 ,10.0,Other,other,0.6,empty_normalized,True
 12345,5.0,Other,other,0.6,empty_normalized,True
 PAYPAL *UNKNOWN,25.99,Other,other,0.6,default_other,True

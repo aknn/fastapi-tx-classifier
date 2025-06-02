@@ -10,7 +10,8 @@ import sys
 import os
 
 # Add the project root to the path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, project_root)
 
 
 def create_test_dataset() -> List[Dict[str, Any]]:
@@ -272,9 +273,7 @@ if __name__ == "__main__":
         results_df = asyncio.run(test_rule_based_performance())
 
         # Save results for further analysis
-        results_df.to_csv(
-            "/workspaces/fastapi-template/rule_based_test_results.csv", index=False
-        )
+        results_df.to_csv("rule_based_test_results.csv", index=False)
         print("\nResults saved to rule_based_test_results.csv")
 
     except Exception as e:

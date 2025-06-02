@@ -12,10 +12,10 @@ def run_pytest_tests():
 
     try:
         result = subprocess.run(
-            [sys.executable, "-m", "pytest", "tests/", "-v", "--tb=short"],
+            [sys.executable, "-m", "pytest", ".", "-v", "--tb=short"],
             capture_output=True,
             text=True,
-            cwd="/workspaces/fastapi-template",
+            cwd="/workspaces/fastapi-template/tests",
         )
 
         print("STDOUT:")

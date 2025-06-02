@@ -14,6 +14,8 @@ FastAPI Template Project Structure (Up-to-date)
 ├── .pre-commit-config.yaml
 ├── .ruff_cache/
 ├── .vscode/
+├── ARCHITECTURE.md                  # 📋 Design decisions and system architecture
+├── CHANGELOG.md                     # 📈 Track accuracy improvements and changes
 ├── CONTRIBUTING.md
 ├── Dockerfile
 ├── docker-compose.yml
@@ -49,7 +51,7 @@ FastAPI Template Project Structure (Up-to-date)
 ├── scripts/
 │   └── api_tester.py                # Test scripts
 ├── test_ci_formatting.md            # Formatting CI guide
-└── tests/                           # Consolidated test directory
+├── tests/                           # 🧪 Consolidated test directory
     ├── __init__.py
     ├── conftest.py
     ├── rule_based_test_results.csv  # Raw test output
@@ -59,3 +61,10 @@ FastAPI Template Project Structure (Up-to-date)
     ├── test_main.py
     ├── test_rule_based_performance.py
     └── test_transactions.py
+└── examples/                        # 📚 API usage examples and samples
+    ├── README.md                    # Examples overview and quick start
+    ├── basic_usage.py               # Simple API interactions
+    ├── batch_operations.py          # Bulk processing examples
+    ├── curl_examples.sh             # Command-line API calls
+    ├── postman_collection.json      # Postman testing collection
+    └── python_client.py             # Full-featured Python client

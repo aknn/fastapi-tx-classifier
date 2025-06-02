@@ -1,0 +1,250 @@
+{
+    "info": {
+        "name": "FastAPI Transaction Classifier",
+        "description": "API collection for testing the FastAPI Transaction Classifier endpoints",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Health Check",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/health",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "health"
+                    ]
+                },
+                "description": "Check if the API is running and healthy"
+            },
+            "response": []
+        },
+        {
+            "name": "System Status",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/status",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "status"
+                    ]
+                },
+                "description": "Get system status and information"
+            },
+            "response": []
+        },
+        {
+            "name": "Classify Transaction - Coffee",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"description\": \"Starbucks Coffee\",\n  \"amount\": 4.85\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/classify",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "classify"
+                    ]
+                },
+                "description": "Classify a coffee purchase transaction"
+            },
+            "response": []
+        },
+        {
+            "name": "Classify Transaction - Gas",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"description\": \"Shell Gas Station\",\n  \"amount\": 52.30\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/classify",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "classify"
+                    ]
+                },
+                "description": "Classify a gas station transaction"
+            },
+            "response": []
+        },
+        {
+            "name": "Classify Transaction - Grocery",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"description\": \"Walmart Grocery Shopping\",\n  \"amount\": 87.42\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/classify",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "classify"
+                    ]
+                },
+                "description": "Classify a grocery shopping transaction"
+            },
+            "response": []
+        },
+        {
+            "name": "Classify Transaction - Entertainment",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"description\": \"Netflix Subscription\",\n  \"amount\": 15.99\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/classify",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "classify"
+                    ]
+                },
+                "description": "Classify an entertainment subscription transaction"
+            },
+            "response": []
+        },
+        {
+            "name": "Get All Transactions",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/transactions",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "transactions"
+                    ]
+                },
+                "description": "Retrieve all stored transactions"
+            },
+            "response": []
+        },
+        {
+            "name": "Get Transaction Statistics",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/transaction-stats",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "transaction-stats"
+                    ]
+                },
+                "description": "Get statistics about transaction categories"
+            },
+            "response": []
+        },
+        {
+            "name": "Error Example - Invalid Amount",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"description\": \"Test Transaction\",\n  \"amount\": \"invalid_amount\"\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/classify",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "classify"
+                    ]
+                },
+                "description": "Example of invalid request that should return validation error"
+            },
+            "response": []
+        },
+        {
+            "name": "Error Example - Missing Fields",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"description\": \"Incomplete Transaction\"\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/classify",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "classify"
+                    ]
+                },
+                "description": "Example of missing required fields"
+            },
+            "response": []
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8000",
+            "description": "Base URL for the FastAPI Transaction Classifier API"
+        }
+    ]
+}

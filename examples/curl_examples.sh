@@ -1,6 +1,35 @@
 #!/bin/bash
 
-# FastAPI Transaction Classifier - cURL Examples
+# FastAPI Transaction# 3. Classify a single t# 4. Classify another transaction
+ech# 7. Error example - invalid data
+echo "7. Error Example - Invalid Data"
+echo "   Command: curl -X POST $API_URL/classify-transaction (with invalid amount)"
+echo "   Data: {'description': 'Test', 'amount': 'invalid'}"
+
+response=$(curl -s -X POST "$API_URL/classify-transaction" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "description": "Test Transaction",
+    "amount": "invalid"
+  }')ify Another Transaction"
+echo "   Command: curl -X POST $API_URL/classify-transaction"
+echo "   Data: {'description': 'Shell Gas Station', 'amount': 52.30}"
+
+response=$(curl -s -X POST "$API_URL/classify-transaction" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "description": "Shell Gas Station",
+    "amount": 52.30
+  }')echo "3. Classify Transaction"
+echo "   Command: curl -X POST $API_URL/classify-transaction -H 'Content-Type: application/json'"
+echo "   Data: {'description': 'Starbucks Coffee', 'amount': 4.85}"
+
+response=$(curl -s -X POST "$API_URL/classify-transaction" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "description": "Starbucks Coffee",
+    "amount": 4.85
+  }') - cURL Examples
 # These examples show how to interact with the API using command-line tools
 
 API_URL="http://localhost:8000"

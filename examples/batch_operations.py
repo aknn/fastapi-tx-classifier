@@ -1,6 +1,16 @@
 #!/usr/bin/env python3
 """
-Batch operations example for the FastAPI Transaction Classifier API.
+Batch operations    try:
+        response = requests.post(
+            f"{BASE_URL}/classify-transa        async with session.post(
+            f"{BASE_URL}/classify-transaction",
+            json=transaction,
+            headers={"Content-Type": "application/json"}
+        ) as response:",
+            json=transaction,
+            headers={"Content-Type": "application/json"},
+            timeout=10
+        )e for the FastAPI Transaction Classifier API.
 
 This script demonstrates:
 - Processing multiple transactions efficiently
@@ -21,21 +31,21 @@ BASE_URL = "http://localhost:8000"
 
 # Sample transaction data for batch processing
 SAMPLE_TRANSACTIONS = [
-    {"description": "Starbucks Coffee Morning", "amount": 4.85},
-    {"description": "Shell Gas Station Fill Up", "amount": 52.30},
-    {"description": "Amazon Prime Purchase", "amount": 29.99},
-    {"description": "Walmart Grocery Shopping", "amount": 87.42},
-    {"description": "Netflix Monthly Subscription", "amount": 15.99},
-    {"description": "McDonald's Lunch", "amount": 8.75},
-    {"description": "Target Home Goods", "amount": 45.20},
-    {"description": "Uber Ride Downtown", "amount": 12.50},
-    {"description": "Home Depot Tools", "amount": 156.78},
-    {"description": "Spotify Premium", "amount": 9.99},
-    {"description": "CVS Pharmacy", "amount": 23.45},
-    {"description": "Chipotle Dinner", "amount": 11.20},
-    {"description": "Best Buy Electronics", "amount": 299.99},
-    {"description": "Costco Bulk Shopping", "amount": 167.83},
-    {"description": "Apple App Store", "amount": 2.99},
+    {"text": "Starbucks Coffee Morning", "amount": 4.85},
+    {"text": "Shell Gas Station Fill Up", "amount": 52.30},
+    {"text": "Amazon Prime Purchase", "amount": 29.99},
+    {"text": "Walmart Grocery Shopping", "amount": 87.42},
+    {"text": "Netflix Monthly Subscription", "amount": 15.99},
+    {"text": "McDonald's Lunch", "amount": 8.75},
+    {"text": "Target Home Goods", "amount": 45.20},
+    {"text": "Uber Ride Downtown", "amount": 12.50},
+    {"text": "Home Depot Tools", "amount": 156.78},
+    {"text": "Spotify Premium", "amount": 9.99},
+    {"text": "CVS Pharmacy", "amount": 23.45},
+    {"text": "Chipotle Dinner", "amount": 11.20},
+    {"text": "Best Buy Electronics", "amount": 299.99},
+    {"text": "Costco Bulk Shopping", "amount": 167.83},
+    {"text": "Apple App Store", "amount": 2.99},
 ]
 
 
@@ -43,7 +53,7 @@ def classify_single_transaction(transaction: Dict[str, Any]) -> Dict[str, Any]:
     """Classify a single transaction synchronously."""
     try:
         response = requests.post(
-            f"{BASE_URL}/classify",
+            f"{BASE_URL}/classify-transaction",
             json=transaction,
             headers={"Content-Type": "application/json"},
             timeout=10,
@@ -66,7 +76,7 @@ def batch_classify_sequential(
     results = []
 
     for i, transaction in enumerate(transactions, 1):
-        print(f"  Processing {i}/{len(transactions)}: {transaction['description']}")
+        print(f"  Processing {i}/{len(transactions)}: {transaction['text']}")
         result = classify_single_transaction(transaction)
         results.append(result)
 
@@ -99,12 +109,10 @@ def batch_classify_parallel(
             transaction = future_to_transaction[future]
             try:
                 result = future.result()
-                print(
-                    f"  Completed {i}/{len(transactions)}: {transaction['description']}"
-                )
+                print(f"  Completed {i}/{len(transactions)}: {transaction['text']}")
                 results.append(result)
             except Exception as e:
-                print(f"  Error processing {transaction['description']}: {e}")
+                print(f"  Error processing {transaction['text']}: {e}")
                 results.append({"error": str(e), "original": transaction})
 
     end_time = time.time()
@@ -119,7 +127,7 @@ async def classify_single_async(
     """Classify a single transaction asynchronously."""
     try:
         async with session.post(
-            f"{BASE_URL}/classify",
+            f"{BASE_URL}/classify-transaction",
             json=transaction,
             headers={"Content-Type": "application/json"},
         ) as response:
@@ -152,7 +160,6 @@ async def batch_classify_async(
                     {"error": str(result), "original": transactions[i]}
                 )
             else:
-                # result is Dict[str, Any] here due to type narrowing
                 processed_results.append(cast(Dict[str, Any], result))
 
     end_time = time.time()
@@ -201,7 +208,7 @@ def analyze_results(results: List[Dict[str, Any]]) -> None:
         for result in results:
             if "error" in result:
                 original = result.get("original", {})
-                desc = original.get("description", "Unknown")
+                desc = original.get("text", "Unknown")
                 print(f"  {desc}: {result['error']}")
 
 

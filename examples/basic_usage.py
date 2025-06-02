@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """
-Basic usage examples for the FastAPI Transaction Classifier API.
+Basic u    try:
+        response = requests.post(
+            f"{BASE_URL}/classify-transaction",
+            json=payload,
+            headers={"Content-Type": "application/json"}
+        )xamples for the FastAPI Transaction Classifier API.
 
 This script demonstrates the most common API operations:
 - Health check
@@ -28,13 +33,13 @@ def health_check() -> Dict[str, Any]:
         return {"status": "error", "message": str(e)}
 
 
-def classify_transaction(description: str, amount: float) -> Dict[str, Any]:
+def classify_transaction(text: str, amount: float) -> Dict[str, Any]:
     """Classify a single transaction."""
-    payload = {"description": description, "amount": amount}
+    payload = {"text": text, "amount": amount}
 
     try:
         response = requests.post(
-            f"{BASE_URL}/classify",
+            f"{BASE_URL}/classify-transaction",
             json=payload,
             headers={"Content-Type": "application/json"},
         )
@@ -81,16 +86,16 @@ def main():
     print("2. Transaction Classification")
 
     sample_transactions = [
-        {"description": "Starbucks Coffee", "amount": 4.85},
-        {"description": "Shell Gas Station", "amount": 52.30},
-        {"description": "Amazon Purchase", "amount": 29.99},
-        {"description": "Walmart Grocery", "amount": 87.42},
-        {"description": "Netflix Subscription", "amount": 15.99},
+        {"text": "Starbucks Coffee", "amount": 4.85},
+        {"text": "Shell Gas Station", "amount": 52.30},
+        {"text": "Amazon Purchase", "amount": 29.99},
+        {"text": "Walmart Grocery", "amount": 87.42},
+        {"text": "Netflix Subscription", "amount": 15.99},
     ]
 
     for i, txn in enumerate(sample_transactions, 1):
-        print(f"   {i}. Classifying: {txn['description']} (${txn['amount']})")
-        result = classify_transaction(txn["description"], txn["amount"])
+        print(f"   {i}. Classifying: {txn['text']} (${txn['amount']})")
+        result = classify_transaction(txn["text"], txn["amount"])
 
         if "error" not in result:
             category = result.get("category", "unknown")

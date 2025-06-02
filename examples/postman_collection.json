@@ -56,12 +56,12 @@
                     "raw": "{\n  \"description\": \"Starbucks Coffee\",\n  \"amount\": 4.85\n}"
                 },
                 "url": {
-                    "raw": "{{base_url}}/classify",
+                    "raw": "{{base_url}}/classify-transaction",
                     "host": [
                         "{{base_url}}"
                     ],
                     "path": [
-                        "classify"
+                        "classify-transaction"
                     ]
                 },
                 "description": "Classify a coffee purchase transaction"

@@ -13,7 +13,7 @@ This client provides:
 import asyncio
 import json
 import time
-from typing import Dict, List, Any, Optional, Union
+from typing import Dict, List, Any, Optional, Union, Sequence
 from dataclasses import dataclass, asdict
 from enum import Enum
 import requests
@@ -152,25 +152,43 @@ class TransactionClassifierClient:
         self, transaction: Union[Transaction, Dict[str, Any]]
     ) -> ClassificationResult:
         """Classify a single transaction."""
+        # Prepare payload with 'text' and 'amount'
+        # Normalize input into text (str) and amount (float)
         if isinstance(transaction, Transaction):
-            data = transaction.to_dict()
+            text_val: str = transaction.description
+            amount_val: float = transaction.amount
             original = transaction
         else:
-            data = transaction
-            original = Transaction(**transaction)
+            text_val = transaction.get("text") or transaction.get("description") or ""
+            amount_val = float(transaction.get("amount") or 0.0)
+            original = Transaction(description=text_val, amount=amount_val)
+        payload = {"text": text_val, "amount": amount_val}
 
-        result = self._make_request("POST", "/classify", data)
+        res = self._make_request("POST", "/classify-transaction", payload)
+        # Expecting {'transaction': {...}, 'message': ...}
+        if "transaction" not in res or not isinstance(res["transaction"], dict):
+            raise APIError(
+                "Invalid response from server: missing 'transaction' field", details=res
+            )
+        tx_dict = res["transaction"]
+        try:
+            category = tx_dict["category"]
+            confidence = tx_dict["confidence"]
+            transaction_id = str(tx_dict["id"])
+            timestamp = tx_dict.get("timestamp", "")
+        except KeyError as e:
+            raise APIError(f"Missing field in transaction response: {e}", details=res)
 
         return ClassificationResult(
-            category=result["category"],
-            confidence=result["confidence"],
-            transaction_id=result["transaction_id"],
-            timestamp=result["timestamp"],
+            category=category,
+            confidence=confidence,
+            transaction_id=transaction_id,
+            timestamp=timestamp,
             original_transaction=original,
         )
 
     def classify_batch(
-        self, transactions: List[Union[Transaction, Dict[str, Any]]]
+        self, transactions: Sequence[Union[Transaction, Dict[str, Any]]]
     ) -> List[ClassificationResult]:
         """Classify multiple transactions."""
         results = []
@@ -287,7 +305,7 @@ class AsyncTransactionClassifierClient:
             data = transaction
             original = Transaction(**transaction)
 
-        result = await self._make_request("POST", "/classify", data)
+        result = await self._make_request("POST", "/classify-transaction", data)
 
         return ClassificationResult(
             category=result["category"],
@@ -298,7 +316,7 @@ class AsyncTransactionClassifierClient:
         )
 
     async def classify_batch(
-        self, transactions: List[Union[Transaction, Dict[str, Any]]]
+        self, transactions: Sequence[Union[Transaction, Dict[str, Any]]]
     ) -> List[ClassificationResult]:
         """Classify multiple transactions concurrently."""
         tasks = [self.classify_transaction(txn) for txn in transactions]
